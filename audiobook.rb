@@ -1,6 +1,8 @@
 require_relative "media"
+require_relative "exportable_mixin"
 
 class Audiobook < Media
+  include Exportable
   attr_reader :duration
 
   def initialize(title, author, duration)
@@ -19,7 +21,18 @@ class Audiobook < Media
     @progress == @duration
   end
 
+  def to_h
+    {
+      type: "audiobook",
+      title: @title,
+      author: @author,
+      duration: @duration,
+      progress: @progress,
+      completed: completed?
+    }
+  end
+
   def to_s
-    "#{@title} by #{@author} (Audiobook, #{@duration} hours, progress #{@progress})"
+    "#{@title} by #{@author} (Audiobook, #{@duration} hours)"
   end
 end
