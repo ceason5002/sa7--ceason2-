@@ -9,7 +9,17 @@ class Book < Media
     @pages = pages
   end
 
+  def read_pages(n)
+    raise ArgumentError, "Pages must be positive" unless n.is_a?(Integer) && n > 0
+    raise ArgumentError, "Cannot exceed total pages" if @progress + n > @pages
+    @progress += n
+  end
+
+  def completed?
+    @progress == @pages
+  end
+
   def to_s
-    "#{@title} by #{@author} (Book, #{@pages} pages)"
+    "#{@title} by #{@author} (Book, #{@pages} pages, progress #{@progress})"
   end
 end
