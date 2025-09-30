@@ -1,4 +1,9 @@
+require_relative "exportable_mixin"
+require "time"
+
+
 class MediaLibrary
+  include Exportable
   attr_reader :items
 
   def initialize
@@ -25,5 +30,12 @@ class MediaLibrary
   def items_by_type(klass)
     @items.select { |i| i.is_a?(klass) }
   end
-end
 
+  def to_h
+    {
+      media: @items.map(&:to_h),
+      export_version: "1.0.0",
+      exported_at: Time.now.utc.iso8601
+    }
+  end
+end
