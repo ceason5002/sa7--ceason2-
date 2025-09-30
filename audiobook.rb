@@ -9,7 +9,17 @@ class Audiobook < Media
     @duration = duration.to_f
   end
 
+  def listen(hours)
+    raise ArgumentError, "Hours must be positive" unless hours.is_a?(Numeric) && hours > 0
+    raise ArgumentError, "Cannot exceed total duration" if @progress + hours > @duration
+    @progress += hours
+  end
+
+  def completed?
+    @progress == @duration
+  end
+
   def to_s
-    "#{@title} by #{@author} (Audiobook, #{@duration} hours)"
+    "#{@title} by #{@author} (Audiobook, #{@duration} hours, progress #{@progress})"
   end
 end
