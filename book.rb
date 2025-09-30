@@ -1,6 +1,8 @@
 require_relative "media"
+require_relative "exportable_mixin"
 
 class Book < Media
+  include Exportable
   attr_reader :pages
 
   def initialize(title, author, pages)
@@ -19,7 +21,19 @@ class Book < Media
     @progress == @pages
   end
 
+  def to_h
+    {
+      type: "book",
+      title: @title,
+      author: @author,
+      pages: @pages,
+      progress: @progress,
+      completed: completed?
+    }
+  end
+
   def to_s
-    "#{@title} by #{@author} (Book, #{@pages} pages, progress #{@progress})"
+    "#{@title} by #{@author} (Book, #{@pages} pages)"
   end
 end
+
